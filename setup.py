@@ -69,17 +69,19 @@ stim_polyfill = Extension(
         '-DSTIM_PYBIND11_MODULE_NAME=_stim_polyfill',
     ],
 )
-stim_sse2 = Extension(
-    'stim._stim_sse2',
-    sources=RELEVANT_SOURCE_FILES,
-    include_dirs=[pybind11.get_include(), "src"],
-    language='c++',
-    extra_compile_args=[
-        *common_compile_args,
-        *arch_sse,
-        '-DSTIM_PYBIND11_MODULE_NAME=_stim_sse2',
-    ],
-)
+
+# NOTE: disabled by Yue on 2025.2.24 to ensure the same simulation sequence on different machines using Docker
+# stim_sse2 = Extension(
+#     'stim._stim_sse2',
+#     sources=RELEVANT_SOURCE_FILES,
+#     include_dirs=[pybind11.get_include(), "src"],
+#     language='c++',
+#     extra_compile_args=[
+#         *common_compile_args,
+#         *arch_sse,
+#         '-DSTIM_PYBIND11_MODULE_NAME=_stim_sse2',
+#     ],
+# )
 
 # NOTE: disabled until https://github.com/quantumlib/Stim/issues/432 is fixed
 # stim_avx2 = Extension(
@@ -104,7 +106,9 @@ def _get_extensions():
         # stim_avx2,
         return [stim_detect_machine_architecture, stim_polyfill,
                 # stim_avx2,
-                stim_sse2]
+# NOTE: disabled by Yue on 2025.2.24 to ensure the same simulation sequence on different machines using Docker
+                # stim_sse2]
+        ]
     else:
         return [stim_detect_machine_architecture, stim_polyfill]
 
